@@ -9,6 +9,14 @@ export async function createBook(requestMatchers: DB) {
     .executeTakeFirstOrThrow();
 }
 
+export async function getRequestMatcher({ id }: { id: string }) {
+  return db
+    .selectFrom("request_matchers")
+    .selectAll()
+    .where("id", "=", id)
+    .executeTakeFirstOrThrow();
+}
+
 export async function fetchRequestMatchers() {
   return db.selectFrom("request_matchers").selectAll().execute();
 }
