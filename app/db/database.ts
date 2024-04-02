@@ -1,6 +1,6 @@
 import pkg from "pg";
 const { Pool } = pkg;
-import { Kysely, PostgresDialect } from "kysely";
+import { CamelCasePlugin, Kysely, PostgresDialect } from "kysely";
 import { DB } from "./types";
 
 const dialect = new PostgresDialect({
@@ -16,5 +16,6 @@ const dialect = new PostgresDialect({
 
 export const db = new Kysely<DB>({
   dialect,
+  plugins: [new CamelCasePlugin()],
 });
 ``;
