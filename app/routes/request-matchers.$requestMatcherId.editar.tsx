@@ -1,14 +1,37 @@
-import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  json,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
-import { getRequestMatcher } from "~/domain/requestMatchers";
+import {
+  getRequestMatcher,
+  updateRequestMatcher,
+} from "~/domain/requestMatchers";
+import { createRequestMatcherSchema } from "~/domain/requestMatchers.common";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Treeceptor - Update Request Matcher" }];
+};
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { requestMatcherId } = params;
   return json(await getRequestMatcher({ id: String(requestMatcherId) }));
 }
 
-export default function RequestMatchers() {
+export async function action({ request, params }: ActionFunctionArgs) {
+  let formData = Object.fromEntries(await request.formData());
+
+  await updateRequestMatcher({
+    requestMatcher: createRequestMatcherSchema.parse(formData),
+    id: String(params.requestMatcherId),
+  });
+  return null;
+}
+
+export default function UpdateRequestMatchers() {
   const requestMatcher = useLoaderData<typeof loader>();
   const [selectedMethod, setSelectedMethod] = useState(requestMatcher.method);
   return (
@@ -29,7 +52,7 @@ export default function RequestMatchers() {
         <select
           id="method"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-          value={selectedMethod}
+          defaultValue={selectedMethod}
           name="method"
         >
           <option>Choose a method</option>
@@ -47,7 +70,7 @@ export default function RequestMatchers() {
           type="text"
           id="ulr"
           name="url"
-          value={requestMatcher.url}
+          defaultValue={requestMatcher.url}
         />
         <label className="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white">
           Header Matcher
@@ -57,7 +80,7 @@ export default function RequestMatchers() {
           type="text"
           id="header"
           name="header"
-          value={requestMatcher.header}
+          defaultValue={requestMatcher.header}
         />
         <label className="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white">
           Body Matcher
@@ -67,7 +90,7 @@ export default function RequestMatchers() {
           type="text"
           id="body"
           name="body"
-          value={requestMatcher.body}
+          defaultValue={requestMatcher.body}
         />
       </div>
       <h3 className="m-8 mb-0 mt-0 font-semibold tracking-[-0.015em] text-[#7ed0ec]">
@@ -82,17 +105,17 @@ export default function RequestMatchers() {
           type="text"
           id="responseStatus"
           name="responseStatus"
-          value={requestMatcher.responseStatus}
+          defaultValue={requestMatcher.responseStatus}
         />
         <label className="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white">
           Body
         </label>
         <textarea
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-          id="body"
-          name="body"
+          id="responseBody"
+          name="responseBody"
           placeholder="enter your json response"
-          value={requestMatcher.responseBody}
+          defaultValue={requestMatcher.responseBody}
         />
       </div>
       <button className="text-[#7ed0ec] p-2 m-2 rounded-xl bg-[#7ed0ec] shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-zinc-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,_0,_0,_0.20),_0px_1px_0px_0px_rgba(255,_255,_255,_0.06)_inset] forced-colors:outline">
