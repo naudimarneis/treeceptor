@@ -42,8 +42,6 @@ export default function Index() {
                   {request.url}
                 </td>
                 <td className="text-zinc-500 dark:text-zinc-400 relative px-4 first:pl-[var(--gutter,theme(spacing.2))] last:pr-[var(--gutter,theme(spacing.2))] border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-2 sm:last:pr-2">
-                  <Link to={`/request-matchers/${request.id}`}>Visualizar</Link>{" "}
-                  |{" "}
                   <Link to={`/request-matchers/${request.id}/editar`}>
                     Editar
                   </Link>
@@ -52,12 +50,13 @@ export default function Index() {
             ))}
           </tbody>
         </table>
-        <button
-          type="submit"
-          className="text-[#7ed0ec] p-2 m-2 rounded-xl bg-[#7ed0ec] shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-zinc-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,_0,_0,_0.20),_0px_1px_0px_0px_rgba(255,_255,_255,_0.06)_inset] forced-colors:outline"
+        <br />
+        <Link
+          to="/request-matchers/adicionar"
+          className="text-[#7ed0ec] p-2 mt-8 rounded-xl bg-[#7ed0ec] shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-zinc-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)] dark:before:pointer-events-none dark:before:absolute dark:before:-inset-px dark:before:rounded-xl dark:before:shadow-[0px_2px_8px_0px_rgba(0,_0,_0,_0.20),_0px_1px_0px_0px_rgba(255,_255,_255,_0.06)_inset] forced-colors:outline"
         >
           Adicionar
-        </button>
+        </Link>
       </div>
     </>
   );

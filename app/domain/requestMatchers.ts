@@ -1,9 +1,8 @@
-import { DB } from "../db/types";
 import { db } from "../db/database";
 import { createRequestMatcherSchema } from "./requestMatchers.common";
 
-export async function createBook(
-  requestMatcher: typeof createRequestMatcherSchema
+export async function createRequestMatcher(
+  requestMatcher: Zod.infer<typeof createRequestMatcherSchema>
 ) {
   return db
     .insertInto("requestMatchers")
